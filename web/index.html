@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video game sales VP</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .carousel-inner>.carousel-item>img,
+        .carousel-inner>.carousel-item>a>img {
+            display: block;
+            margin:auto;
+            max-width: 100%;
+            height: 500px !important;
+        }
+        .carousel-inner .carousel-item p,
+        .carousel-inner .carousel-item h3 {
+            background-color: rgba(0, 0, 0, 0.5);
+            
+        }
+        .carousel-indicators li{
+            background-color: black;
+            height: 3px;
+        }
+        [class^="carousel-control"] span{
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1">
+                <img src="https://www.ferit.unios.hr/new-images/ferit-web-200.png" alt="Ferit logo" height="114"
+                    width="100">
+            </div>
+            <div class="col-sm-6 pt-3">
+                <h1>Video game sales</h1>
+            </div>
+            <div class="col-sm-5">
+                <div class="container">
+                    <ul class="list-group list-group-horizontal justify-content-end p-3">
+                        <li class="list-group-item text-body">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonGenre"
+                                data-toggle="dropdown">Genre</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonGenre">
+                                <a class="dropdown-item" href="#">Platformer</a>
+                                <a class="dropdown-item" href="#">Strategy</a>
+                                <a class="dropdown-item" href="#">First person shooter</a>
+                                <a class="dropdown-item" href="#">Third person shooter</a>
+                                <a class="dropdown-item" href="#">Puzzle</a>
+                                <a class="dropdown-item" href="#">Action</a>
+                            </div>
+                        </li>
+                        <li class="list-group-item text-body">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonPlatform"
+                                data-toggle="dropdown">Platform</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonPlatform">
+                                <a class="dropdown-item" href="#">PC</a>
+                                <a class="dropdown-item" href="#">XBOX</a>
+                                <a class="dropdown-item" href="#">PlayStation</a>
+                                <a class="dropdown-item" href="#">Super Nintendo Entertainment System</a>
+                                <a class="dropdown-item" href="#">Nintendo Gamecube</a>
+                                <a class="dropdown-item" href="#">Sega Genesis</a>
+                            </div>
+                        </li>
+                        <li class="list-group-item text-body">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonRegion"
+                                data-toggle="dropdown">Region</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonRegion">
+                                <a class="dropdown-item" href="#">Global</a>
+                                <a class="dropdown-item" href="#">North America</a>
+                                <a class="dropdown-item" href="#">Europe</a>
+                                <a class="dropdown-item" href="#">Japan</a>
+                                <a class="dropdown-item" href="#">Other</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-9 p-2">
+                    <div class="carousel slide" id="demo" data-ride="carousel">
+                        <ul class="carousel-indicators">
+                            <li data-target="#demo" data-slide-to="0" class="active"></li>
+                            <li data-target="#demo" data-slide-to="1"></li>
+                        </ul>
+
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="./temp/Clipboard01.png" alt="some graph">
+                                <div class="carousel-caption">
+                                    <h3>Example one</h3>
+                                    <p>Explanation one</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="./temp/Untitled.png" alt="other graph">
+                                <div class="carousel-caption">
+                                    <h3>Example two</h3>
+                                    <p>Explanation two</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#demo" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-header">Current settings:</div>
+                        <div class="card-body">
+                            <p>Genre: #</p>
+                            <p>Platform: #</p>
+                            <p>Region: #</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
