@@ -39,7 +39,7 @@
                                 <a class="dropdown-item" id="buttonActionAdventure">Action-Adventure</a>
                                 <a class="dropdown-item" id="buttonAdventure">Adventure</a>
                                 <a class="dropdown-item" id="buttonFighting">Fighting</a>
-                                <a class="dropdown-item" id="buttonMisc">Misc</a>
+                                <a class="dropdown-item" id="buttonMisc">Miscellaneous</a>
                                 <a class="dropdown-item" id="buttonMusic">Music</a>
                                 <a class="dropdown-item" id="buttonParty">Party</a>
                                 <a class="dropdown-item" id="buttonPlatform">Platform</a>
@@ -59,13 +59,13 @@
                                 <a class="dropdown-item" id="buttonN64">Nintendo 64</a>
                                 <a class="dropdown-item" id="buttonSNES">Super Nintendo Entertainment System</a>
                                 <a class="dropdown-item" id="buttonNS">Nintendo Switch</a>
+                                <a class="dropdown-item" id="buttonWii">Wii</a>
+                                <a class="dropdown-item" id="buttonWiiU">WiiU</a>
                                 <a class="dropdown-item" id="buttonPS">PlayStation</a>
                                 <a class="dropdown-item" id="buttonPS2">PlayStation 2</a>
                                 <a class="dropdown-item" id="buttonPS3">PlayStation 3</a>
                                 <a class="dropdown-item" id="buttonPS4">PlayStation 4</a>
                                 <a class="dropdown-item" id="buttonPSV">PlayStation Vita</a>
-                                <a class="dropdown-item" id="buttonWii">Wii</a>
-                                <a class="dropdown-item" id="buttonWiiU">WiiU</a>
                                 <a class="dropdown-item" id="buttonX360">Xbox 360</a>
                                 <a class="dropdown-item" id="buttonXONE">Xbox One</a>
                                 <a class="dropdown-item" id="buttonPC">PC</a>
@@ -77,9 +77,8 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonRegion">
                                 <a class="dropdown-item" id="buttonGlobal">Global</a>
                                 <a class="dropdown-item" id="buttonNA">North America</a>
-                                <a class="dropdown-item" id="buttonEU">Europe</a>
+                                <a class="dropdown-item" id="buttonPAL">Europe</a>
                                 <a class="dropdown-item" id="buttonJP">Japan</a>
-                                <a class="dropdown-item" id="buttonOther">Other</a>
                             </div>
                         </li>
                     </ul>
@@ -119,7 +118,7 @@
                 <div class="col-md-12 col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            Top 5 in tabular format:
+                            Top 5 in tabular format: <div class="spinner-border spinner-border-sm" id="loaderSpinner"></div>
                         </div>
                         <div class="card-body">
                             <table class="table table-striped" id="tableCurrentSettings">
@@ -168,26 +167,32 @@
                             <table class="table table-bordered" id="tableClicked">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Name</th>
-                                        <th>Sales</th>
+                                        <th>Genre</th>
+                                        <th>ESRB rating</th>
+                                        <th>Platform</th>
+                                        <th>Publisher</th>
+                                        <th>Developer</th>
+                                        <th>Global sales</th>
+                                        <th>NA sales</th>
+                                        <th>EU sales</th>
+                                        <th>JP sales</th>
+                                        <th>Other sales</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -201,27 +206,164 @@
 <script>
     var DataFrame = dfjs.DataFrame;
     class DataManipulator {
-        constructor() {
+        constructor(verbose = false) {
             this.data = null;
-            this.selectedRegion = "";
-            this.selectedPlatform = "";
-            this.selectedGenre = "";
+            this.verbose = verbose;
+
+            this.genres = ["Action", "ActionAdventure", "Adventure", "Fighting", "Misc", "Music", "Party", "Platform", "Puzzle", "Racing", "Shooter", "Simulation", "Sports", "Strategy"];
+            this.genreButtons = [];
+            this.selectedGenre = "Action";
+
+            this.platforms = ["N64", "SNES", "NS", "Wii", "WiiU", "PS", "PS2", "PS3", "PS4", "PSV", "X360", "XONE", "PC"];
+            this.platformButtons = [];
+            this.selectedPlatform = "N64";
+
+            this.regions = ["Global", "NA", "PAL", "JP"];
+            this.regionButtons = [];
+            this.selectedRegion = "Global";
+
+            this.settingInfoText = [];
+            this.additionalInfoText = null;
+
+            this.spinner = null;
+            
+            this.info = {"Action":"Action text",
+                "ActionAdventure":"ActionAdventure text",
+                "Adventure":"Adventure text",
+                "Fighting":"Fighting text",
+                "Misc":"Miscellaneous text",
+                "Music":"Music text",
+                "Party":"Party text",
+                "Platform":"Platform text",
+                "Puzzle":"Puzzle text",
+                "Racing":"Racing text",
+                "RolePlaying":"Role playing text",
+                "Shooter":"Shooter text",
+                "Simulation":"Simulation text",
+                "Sports":"Sports text",
+                "Strategy":"Strategy text",
+                "N64": "Nintendo 64 text",
+                "SNES":"Super Nintendo Entertainment system text",
+                "NS":"Nintendo Switch text",
+                "Wii":"Nintendo Wii text",
+                "WiiU":"Nintendo WiiU",
+                "PS":"Playstation 1",
+                "PS2":"Playstation 2",
+                "PS3":"Playstation 3",
+                "PS4":"Playstation 4",
+                "PSV":"Playstation Vita",
+                "X360":"Xbox 360",
+                "XONE":"Xbox ONE",
+                "PC":"Personal computer"};
+            this.lastChangedSetting = "Action";
         }
 
-        _init(verbose = false) {
+        init() {
             //ucitaj podatke koristeci dataframe-js biblioteku
             DataFrame.fromCSV("src/smol.csv").then(df => {
-                if (verbose) {
-                    console.log("Loaded " + df.count() + " row(s) into data");
+                this.data = df.select('Name','Genre','ESRB_Rating','Platform','Publisher','Developer','Global_Sales','NA_Sales','PAL_Sales','JP_Sales','Year');
+                if (this.verbose) {
+                    console.log("Loaded " + this.data.count() + " row(s) into data");
                     console.log("Example:");
-                    df.head(3).show();
+                    this.data.head(3).show();
                 }
-                this.data = df;
+                
+                this.setEvents();
+
+                let settingGenre = document.querySelector("#textGenre");
+                let settingPlatform = document.querySelector("#textPlatform");
+                let settingRegion = document.querySelector("#textRegion");
+                this.settingInfoText.push(settingGenre, settingPlatform, settingRegion);
+                this.additionalInfoText = document.querySelector("#textAdditionalInfo");
+                this.spinner = document.querySelector("#loaderSpinner");
+                if (this.verbose) { console.log(this.settingInfoText); }
+
+                this.updateDisplay();
             });
         }
+
+        setEvents() {
+            this.genres.forEach(genre => {
+                let temp = document.querySelector("#button" + genre);
+                this.eventClickHandlerChange(temp, "genre", genre);
+                this.genreButtons.push(temp);
+
+            });
+            if (this.verbose) { console.log(this.genreButtons); }
+
+            this.platforms.forEach(platform => {
+                let temp = document.querySelector("#button" + platform);
+                this.eventClickHandlerChange(temp, "platform", platform);
+                this.platformButtons.push(temp);
+            });
+            if (this.verbose) { console.log(this.platformButtons); }
+
+            this.regions.forEach(region => {
+                let temp = document.querySelector("#button" + region);
+                this.eventClickHandlerChange(temp, "region", region);
+                this.regionButtons.push(temp);
+            });
+            if (this.verbose) { console.log(this.regionButtons); }
+        }
+
+        eventClickHandlerChange(button, type, value) {
+            if (type == "genre") {
+                button.addEventListener("click", (e) => {
+                    this.selectedGenre = value;
+                    this.lastChangedSetting = value;
+                    this.updateDisplay();
+                });
+            } else if (type == "platform") {
+                button.addEventListener("click", (e) => {
+                    this.selectedPlatform = value;
+                    this.lastChangedSetting = value;
+                    this.updateDisplay();
+                });
+            } else if (type == "region") {
+                button.addEventListener("click", (e) => {
+                    this.selectedRegion = value;
+                    this.updateDisplay();
+                });
+            } else {
+                console.log("Something went wrong with setting on click events with following parameters (button, type, value):");
+                console.log(button);
+                console.log(type);
+                console.log(value);
+            }
+        }
+
+        showSpinner(){
+            this.spinner.className = "spinner-border spinner-border-sm";
+        }
+        hideSpinner(){
+            this.spinner.className = "";
+        }
+
+        updateDisplay() {
+            if (this.verbose) {
+                console.log(this.selectedGenre);
+                console.log(this.selectedPlatform);
+                console.log(this.selectedRegion);
+            }
+
+            this.showSpinner()
+
+            this.settingInfoText[0].innerHTML = "Genre: " + this.selectedGenre;
+            this.settingInfoText[1].innerHTML = "Platform: " + this.selectedPlatform;
+            this.settingInfoText[2].innerHTML = "Region: " + this.selectedRegion;
+            this.additionalInfoText.innerHTML = this.info[this.lastChangedSetting];
+            this.getTopTenFromData();
+
+        }
+
+        getTopTenFromData(){
+            let temp = this.data.select('Name','Genre','ESRB_Rating','Platform','Publisher','Developer',this.selectedRegion+'_Sales','Year').filter({'Genre':this.selectedGenre, 'Platform':this.selectedPlatform});
+            console.log("Gotten " + temp.count() + " row(s) of data");
+            temp.head(10).show();
+        }
     }
-    let dm = new DataManipulator();
-    dm._init(true);
+    let dm = new DataManipulator(true);
+    dm.init();
 </script>
 
 </html>
