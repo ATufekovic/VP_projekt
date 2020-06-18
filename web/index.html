@@ -10,20 +10,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://gmousse.github.io/dataframe-js/dist/dataframe.min.js"></script>
-    <style>
-
-    </style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 col-xl-1">
-                <img src="https://www.ferit.unios.hr/new-images/ferit-web-200.png" alt="Ferit logo" height="114"
-                    width="100">
+                <img src="./src/ferit.png" alt="Ferit logo" height="115">
             </div>
             <div class="col-sm-10 col-xl-6 pt-3">
                 <h1>Video game sales</h1>
@@ -87,82 +80,22 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-9 col-xl-10 p-2">
-                    <svg id="svg"></svg>
-                </div>
-                <div class="col-lg-3 col-xl-2">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-12">
-                            <div class="card">
-                                <div class="card-header">Current settings:</div>
-                                <div class="card-body">
-                                    <p id="textGenre">Genre: #</p>
-                                    <p id="textPlatform">Platform: #</p>
-                                    <p id="textRegion">Region: #</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-12">
-                            <div class="card">
-                                <div class="card-header">Additional info:</div>
-                                <div class="card-body">
-                                    <p id="textAdditionalInfo">Some extra information about the last parameter selected
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-lg-6">
+                <div class="col-lg-9 p-2" id="svgContainer"></div>
+                <div class="col-lg-3">
                     <div class="card">
-                        <div class="card-header">
-                            Top 5 in tabular format: <div class="spinner-border spinner-border-sm" id="loaderSpinner"></div>
-                        </div>
+                        <div class="card-header">Current settings:</div>
                         <div class="card-body">
-                            <table class="table table-striped" id="tableCurrentSettings">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Sales</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5.</td>
-                                        <td>Name</td>
-                                        <td>Value</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <p id="textGenre">Genre: #</p>
+                            <p id="textPlatform">Platform: #</p>
+                            <p id="textRegion">Region: #</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-lg-6">
+                <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header" id="textClickedGameTitle">Game: N/A</div>
+                        <div class="card-header" id="textClickedGameTitle">
+                            <div id="loaderSpinner"></div>Game: click on a member of the pie chart to display more data
+                        </div>
                         <div class="card-body">
                             <table class="table table-bordered" id="tableClicked">
                                 <thead>
@@ -173,11 +106,7 @@
                                         <th>Platform</th>
                                         <th>Publisher</th>
                                         <th>Developer</th>
-                                        <th>Global sales</th>
-                                        <th>NA sales</th>
-                                        <th>EU sales</th>
-                                        <th>JP sales</th>
-                                        <th>Other sales</th>
+                                        <th>Region sales</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -189,23 +118,32 @@
                                         <td>N/A</td>
                                         <td>N/A</td>
                                         <td>N/A</td>
-                                        <td>N/A</td>
-                                        <td>N/A</td>
-                                        <td>N/A</td>
-                                        <td>N/A</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+                        <div class="card-footer">
+                            <p class="text-danger">Warning! Will lag considering the dataset is several MB in size and
+                                dataframe-js doesn't play well with such sizes</p>
+                            <p>Made by Anto Tufeković, <a href="https://github.com/ATufekovic/VP_projekt"
+                                    target="_blank">GitHub</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </body>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://gmousse.github.io/dataframe-js/dist/dataframe.min.js"></script>
 <script>
     var DataFrame = dfjs.DataFrame;
+
     class DataManipulator {
+        /**
+     * Klasa koja obavlja sve poslove vezane za manipulaciju podatcima te prikazom u grafickom obliku - podrzano samo pie graph i csv datoteke
+    */
         constructor(verbose = false) {
             this.data = null;
             this.verbose = verbose;
@@ -223,65 +161,47 @@
             this.selectedRegion = "Global";
 
             this.settingInfoText = [];
-            this.additionalInfoText = null;
 
             this.spinner = null;
-            
-            this.info = {"Action":"Action text",
-                "ActionAdventure":"ActionAdventure text",
-                "Adventure":"Adventure text",
-                "Fighting":"Fighting text",
-                "Misc":"Miscellaneous text",
-                "Music":"Music text",
-                "Party":"Party text",
-                "Platform":"Platform text",
-                "Puzzle":"Puzzle text",
-                "Racing":"Racing text",
-                "RolePlaying":"Role playing text",
-                "Shooter":"Shooter text",
-                "Simulation":"Simulation text",
-                "Sports":"Sports text",
-                "Strategy":"Strategy text",
-                "N64": "Nintendo 64 text",
-                "SNES":"Super Nintendo Entertainment system text",
-                "NS":"Nintendo Switch text",
-                "Wii":"Nintendo Wii text",
-                "WiiU":"Nintendo WiiU",
-                "PS":"Playstation 1",
-                "PS2":"Playstation 2",
-                "PS3":"Playstation 3",
-                "PS4":"Playstation 4",
-                "PSV":"Playstation Vita",
-                "X360":"Xbox 360",
-                "XONE":"Xbox ONE",
-                "PC":"Personal computer"};
-            this.lastChangedSetting = "Action";
-        }
 
+            this.svgContainer = null;
+
+            this.tableClicked = null;
+            this.textClickedGameTitle = null;
+        }
+        /**
+         * Funkcija koja bi se trebala pozivati nakon kreiranje klase da bi se pokrenuo proces dohvacanja svih potrebnih elemenata.
+        */
         init() {
             //ucitaj podatke koristeci dataframe-js biblioteku
             DataFrame.fromCSV("src/smol.csv").then(df => {
-                this.data = df.select('Name','Genre','ESRB_Rating','Platform','Publisher','Developer','Global_Sales','NA_Sales','PAL_Sales','JP_Sales','Year');
+                this.data = df.select('Name', 'Genre', 'ESRB_Rating', 'Platform', 'Publisher', 'Developer', 'Global_Sales', 'NA_Sales', 'PAL_Sales', 'JP_Sales', 'Year');
                 if (this.verbose) {
                     console.log("Loaded " + this.data.count() + " row(s) into data");
                     console.log("Example:");
                     this.data.head(3).show();
                 }
-                
+                //nakon ucitavanja pocni sve ostale elemente dohvacati i rijesi tipke
+
                 this.setEvents();
 
                 let settingGenre = document.querySelector("#textGenre");
                 let settingPlatform = document.querySelector("#textPlatform");
                 let settingRegion = document.querySelector("#textRegion");
                 this.settingInfoText.push(settingGenre, settingPlatform, settingRegion);
-                this.additionalInfoText = document.querySelector("#textAdditionalInfo");
                 this.spinner = document.querySelector("#loaderSpinner");
+                this.svgContainer = document.querySelector("#svgContainer");
+                this.tableClicked = document.querySelector("#tableClicked");
+                this.textClickedGameTitle = document.querySelector("#textClickedGameTitle");
                 if (this.verbose) { console.log(this.settingInfoText); }
 
+                //na kraju se prikaz osvježava
                 this.updateDisplay();
             });
         }
-
+        /**
+         * Funkcija koja ide po tipkama u dropdown menu-ima te svaku tipku sa pripadajucim vrijednostima prosljedjuje dalje funkciji koja obraduje tipke
+        */
         setEvents() {
             this.genres.forEach(genre => {
                 let temp = document.querySelector("#button" + genre);
@@ -305,18 +225,18 @@
             });
             if (this.verbose) { console.log(this.regionButtons); }
         }
-
+        /**
+         * Funkcija koja danoj tipci daje on click event ovisno o proslijedjenim varijablama te tada mijenjaju trenutno odabrane varijable za prikaz
+        */
         eventClickHandlerChange(button, type, value) {
             if (type == "genre") {
                 button.addEventListener("click", (e) => {
                     this.selectedGenre = value;
-                    this.lastChangedSetting = value;
                     this.updateDisplay();
                 });
             } else if (type == "platform") {
                 button.addEventListener("click", (e) => {
                     this.selectedPlatform = value;
-                    this.lastChangedSetting = value;
                     this.updateDisplay();
                 });
             } else if (type == "region") {
@@ -331,14 +251,9 @@
                 console.log(value);
             }
         }
-
-        showSpinner(){
-            this.spinner.className = "spinner-border spinner-border-sm";
-        }
-        hideSpinner(){
-            this.spinner.className = "";
-        }
-
+        /**
+         * Funkcija koja osvježava sadrzaj stranice jednom, mijenja prikaz odabranih varijabli te sam graf
+        */
         updateDisplay() {
             if (this.verbose) {
                 console.log(this.selectedGenre);
@@ -346,23 +261,94 @@
                 console.log(this.selectedRegion);
             }
 
-            this.showSpinner()
-
             this.settingInfoText[0].innerHTML = "Genre: " + this.selectedGenre;
             this.settingInfoText[1].innerHTML = "Platform: " + this.selectedPlatform;
             this.settingInfoText[2].innerHTML = "Region: " + this.selectedRegion;
-            this.additionalInfoText.innerHTML = this.info[this.lastChangedSetting];
-            this.getTopTenFromData();
 
+            let dataArray = this.getTopTenFromData();
+            this.showGraph(dataArray);
         }
+        /**
+         * Funkcija koja odabire potrebne stupce iz baze podataka te proslijeduje prvih deset (ili manje) natrag
+        */
+        getTopTenFromData() {
+            let temp = this.data.select('Name', 'Genre', 'ESRB_Rating', 'Platform', 'Publisher', 'Developer', this.selectedRegion + '_Sales', 'Year').filter({ 'Genre': this.selectedGenre, 'Platform': this.selectedPlatform }).filter(row => row.get(this.selectedRegion + '_Sales') != "");
+            if (this.verbose) {
+                console.log("Gotten " + temp.count() + " row(s) of data");
+                console.log(temp.head(10).toArray());
+            }
+            return temp.head(10).toArray();
+        }
+        /**
+         * Funkcija koja prvo provjerava dali svg kontejner ima clanove, ako da obrisi ih, nakon toga stvara novi svg element sa grafom koji sadrzi vrijednosti proslijedjenih podataka
+        */
+        showGraph(dataArray) {
+            if (this.svgContainer.hasChildNodes()) {
+                this.svgContainer.innerHTML = "";
+            }
+            let width = 800;
+            let height = 800;
+            let outerRadius = (Math.min(width, height) / 2) * 0.9;
+            let innerRadius = 0;
+            let color = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
 
-        getTopTenFromData(){
-            let temp = this.data.select('Name','Genre','ESRB_Rating','Platform','Publisher','Developer',this.selectedRegion+'_Sales','Year').filter({'Genre':this.selectedGenre, 'Platform':this.selectedPlatform});
-            console.log("Gotten " + temp.count() + " row(s) of data");
-            temp.head(10).show();
+            let svg = d3.select("#svgContainer")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            let pie = d3.pie()
+                .value(d => parseFloat((d[6]).replace(',', '.')))
+                .sort(null);
+
+            let arc = d3.arc()
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius);
+
+            let pieArcs = svg.selectAll("g.pie")
+                .data(pie(dataArray))
+                .enter()
+                .append("g")
+                .attr("class", "pie")
+                .attr("transform", "translate(" + (width / 2) + ", " + (height / 2) + ")");
+            pieArcs.append("path")
+                .attr("fill", function (d, i) { return color(i); })
+                .attr("d", arc);
+
+            let pieArcsText = svg.selectAll("g.text")
+                .data(pie(dataArray))
+                .enter()
+                .append("g")
+                .attr("class", "pieText")
+                .attr("transform", "translate(" + (width / 2) + ", " + (height / 2) + ")");
+            pieArcsText.append("text")
+                .attr("transform", function (d) {
+                    var sum = 0.0;
+                    var pi = Math.PI;
+                    sum += d.endAngle + d.startAngle;
+                    sum /= 2;
+                    sum *= (180 / pi);
+                    if (sum < 180) {
+                        sum -= 90;
+                    }
+                    else if (sum >= 180) {
+                        sum += 90;
+                    }
+                    return "translate(" + arc.centroid(d) + ") rotate(" + sum + ")";
+                })
+                .attr("text-anchor", "middle")
+                .attr("class", "text")
+                .text(function (d) { return d.data[0] + ": " + d.data[6] + "M"; });
+            pieArcs.on("click", (d) => {
+                if (this.verbose) { console.log(d.data); }
+                let temp = "<td>" + d.data[0] + "</td>" + "<td>" + d.data[1] + "</td>" + "<td>" + d.data[2] + "</td>" + "<td>" + d.data[3] + "</td>" + "<td>" + d.data[4] + "</td>" + "<td>" + d.data[5] + "</td>" + "<td>" + d.data[6] + " Million units</td>";
+                this.tableClicked.rows[1].innerHTML = temp;
+                this.textClickedGameTitle.innerHTML = "<div id='loaderSpinner'></div>Game: " + d.data[0];
+            });
+
         }
     }
-    let dm = new DataManipulator(true);
+    let dm = new DataManipulator();
     dm.init();
 </script>
 
