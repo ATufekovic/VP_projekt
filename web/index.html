@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video game sales VP</title>
-
+	<!-- Ovdje se uključuje Bootstrap 4 te koristi se kroz cijeli HTML kod: https://getbootstrap.com/ -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -138,7 +138,7 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://gmousse.github.io/dataframe-js/dist/dataframe.min.js"></script>
 <script>
-    var DataFrame = dfjs.DataFrame;
+    var DataFrame = dfjs.DataFrame;//prvo se mora definirati klasa DataFrame iz dataframe-js biblioteke:https://gmousse.gitbooks.io/dataframe-js/
 
     class DataManipulator {
         /**
@@ -173,7 +173,7 @@
          * Funkcija koja bi se trebala pozivati nakon kreiranje klase da bi se pokrenuo proces dohvacanja svih potrebnih elemenata.
         */
         init() {
-            //ucitaj podatke koristeci dataframe-js biblioteku
+            //ucitaj podatke koristeci dataframe-js biblioteku: https://www.kaggle.com/ashaheedq/video-games-sales-2019
             DataFrame.fromCSV("src/smol.csv").then(df => {
                 this.data = df.select('Name', 'Genre', 'ESRB_Rating', 'Platform', 'Publisher', 'Developer', 'Global_Sales', 'NA_Sales', 'PAL_Sales', 'JP_Sales', 'Year');
                 if (this.verbose) {
@@ -286,6 +286,7 @@
             if (this.svgContainer.hasChildNodes()) {
                 this.svgContainer.innerHTML = "";
             }
+			//u sljedecem dijelu koda se koristi d3 biblioteka: https://github.com/d3/d3
             let width = 800;
             let height = 800;
             let outerRadius = (Math.min(width, height) / 2) * 0.9;
