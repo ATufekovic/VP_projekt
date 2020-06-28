@@ -9,3 +9,5 @@ U pripadnom folderu host servisa kopirati "web" folder, unutra se nalazi sve pot
 Na kraju navigirati na pripadajući localhost link i navigirati onda do foldera gjde se nalazi index.html, automatski bi se trebao učitati
 
 Odabir na web stranici se mijenja koristeći dropdown meni na desnoj strani stranice. Klikom na nekog člana grafa prikazuju se svi podatci vezani za tog člana.
+
+Github pages projekta: https://atufekovic.github.io/
