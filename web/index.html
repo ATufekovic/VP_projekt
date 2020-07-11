@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video game sales VP</title>
-	<!-- Ovdje se uključuje Bootstrap 4 te koristi se kroz cijeli HTML kod: https://getbootstrap.com/ -->
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -13,57 +13,38 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-2 col-xl-1">
-                <img src="./src/ferit.png" alt="Ferit logo" height="115">
-            </div>
-            <div class="col-sm-10 col-xl-6 pt-3">
-                <h1>Video game sales</h1>
-            </div>
-            <div class="col-sm-12 col-xl-5">
-                <div class="container">
-                    <ul class="list-group list-group-horizontal justify-content-end p-3">
-                        <li class="list-group-item text-body">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonGenre"
-                                data-toggle="dropdown">Genre</button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonGenre">
-                                <a class="dropdown-item" id="buttonAction">Action</a>
-                                <a class="dropdown-item" id="buttonAction-Adventure">Action-Adventure</a>
-                                <a class="dropdown-item" id="buttonAdventure">Adventure</a>
-                                <a class="dropdown-item" id="buttonFighting">Fighting</a>
-                                <a class="dropdown-item" id="buttonMisc">Miscellaneous</a>
-                                <a class="dropdown-item" id="buttonMusic">Music</a>
-                                <a class="dropdown-item" id="buttonParty">Party</a>
-                                <a class="dropdown-item" id="buttonPlatform">Platform</a>
-                                <a class="dropdown-item" id="buttonPuzzle">Puzzle</a>
-                                <a class="dropdown-item" id="buttonRacing">Racing</a>
-                                <a class="dropdown-item" id="buttonRole-Playing">Role-Playing</a>
-                                <a class="dropdown-item" id="buttonShooter">Shooter</a>
-                                <a class="dropdown-item" id="buttonSimulation">Simulation</a>
-                                <a class="dropdown-item" id="buttonSports">Sports</a>
-                                <a class="dropdown-item" id="buttonStrategy">Strategy</a>
+    <div class="jumbotron">
+        <div class="container-fluid">
+            <!-- Ovdje je header dio -->
+            <div class="d-flex flex-wrap">
+                <div class="mr-auto">
+                    <img src="./src/ferit.png" alt="Ferit logo" height="200">
+                </div>
+                <div class="pt-3 mr-auto">
+                    <h1>Video game sales</h1>
+                </div>
+                <div class="ml-auto">
+                    <div class="card">
+                        <div class="card-header">Current settings:</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col card">
+                                    <p id="textGenreLeft">Genre left: #</p>
+                                    <p id="textPlatformLeft">Platform left: #</p>
+                                </div>
+                                <div class="col card">
+                                    <p id="textGenreRight">Genre right: #</p>
+                                    <p id="textPlatformRight">Platform right: #</p>
+                                </div>
                             </div>
-                        </li>
-                        <li class="list-group-item text-body">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonPlatform"
-                                data-toggle="dropdown">Platform</button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonPlatform">
-                                <a class="dropdown-item" id="buttonN64">Nintendo 64</a>
-                                <a class="dropdown-item" id="buttonSNES">Super Nintendo Entertainment System</a>
-                                <a class="dropdown-item" id="buttonNS">Nintendo Switch</a>
-                                <a class="dropdown-item" id="buttonWii">Wii</a>
-                                <a class="dropdown-item" id="buttonWiiU">WiiU</a>
-                                <a class="dropdown-item" id="buttonPS">PlayStation</a>
-                                <a class="dropdown-item" id="buttonPS2">PlayStation 2</a>
-                                <a class="dropdown-item" id="buttonPS3">PlayStation 3</a>
-                                <a class="dropdown-item" id="buttonPS4">PlayStation 4</a>
-                                <a class="dropdown-item" id="buttonPSV">PlayStation Vita</a>
-                                <a class="dropdown-item" id="buttonX360">Xbox 360</a>
-                                <a class="dropdown-item" id="buttonXONE">Xbox One</a>
-                                <a class="dropdown-item" id="buttonPC">PC</a>
-                            </div>
-                        </li>
+                        </div>
+                        <div class="card-footer">
+                            <p id="textRegion">Region: #</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <ul class="list-group justify-content-end">
                         <li class="list-group-item text-body">
                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonRegion"
                                 data-toggle="dropdown">Region</button>
@@ -74,25 +55,132 @@
                                 <a class="dropdown-item" id="buttonJP">Japan</a>
                             </div>
                         </li>
+                        <li class="list-group-item text-body">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonGraphType" data-toggle="dropdown">GraphType</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonGraphType">
+                                <a class="dropdown-item" id="buttonGraphTypePie">Pie</a>
+                                <a class="dropdown-item" id="buttonGraphTypeBarplot">Barplot</a>
+                                <a class="dropdown-item" id="buttonGraphTypeTreemap">Treemap</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container-fluid">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-9 p-2" id="svgContainer"></div>
-                <div class="col-lg-3">
-                    <div class="card">
-                        <div class="card-header">Current settings:</div>
-                        <div class="card-body">
-                            <p id="textGenre">Genre: #</p>
-                            <p id="textPlatform">Platform: #</p>
-                            <p id="textRegion">Region: #</p>
+                <div class="col">
+                    <!-- Ovdje pocinje svg dio -->
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-9" id="svgContainerLeft"></div>
+                                        <div class="col-md-3">
+                                            <ul class="list-group list-group-horizontal justify-content-end p-1">
+                                                <li class="list-group-item text-body">
+                                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonGenre" data-toggle="dropdown">Genre</button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonGenre">
+                                                        <a class="dropdown-item" id="leftButtonAction">Action</a>
+                                                        <a class="dropdown-item" id="leftButtonActionAdventure">Action-Adventure</a>
+                                                        <a class="dropdown-item" id="leftButtonAdventure">Adventure</a>
+                                                        <a class="dropdown-item" id="leftButtonFighting">Fighting</a>
+                                                        <a class="dropdown-item" id="leftButtonMisc">Miscellaneous</a>
+                                                        <a class="dropdown-item" id="leftButtonMusic">Music</a>
+                                                        <a class="dropdown-item" id="leftButtonParty">Party</a>
+                                                        <a class="dropdown-item" id="leftButtonPlatform">Platform</a>
+                                                        <a class="dropdown-item" id="leftButtonPuzzle">Puzzle</a>
+                                                        <a class="dropdown-item" id="leftButtonRacing">Racing</a>
+                                                        <a class="dropdown-item" id="leftButtonRolePlaying">Role-Playing</a>
+                                                        <a class="dropdown-item" id="leftButtonShooter">Shooter</a>
+                                                        <a class="dropdown-item" id="leftButtonSimulation">Simulation</a>
+                                                        <a class="dropdown-item" id="leftButtonSports">Sports</a>
+                                                        <a class="dropdown-item" id="leftButtonStrategy">Strategy</a>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item text-body">
+                                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonPlatform" data-toggle="dropdown">Platform</button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonPlatform">
+                                                        <a class="dropdown-item" id="leftButtonN64">Nintendo 64</a>
+                                                        <a class="dropdown-item" id="leftButtonSNES">Super Nintendo Entertainment System</a>
+                                                        <a class="dropdown-item" id="leftButtonNS">Nintendo Switch</a>
+                                                        <a class="dropdown-item" id="leftButtonWii">Wii</a>
+                                                        <a class="dropdown-item" id="leftButtonWiiU">WiiU</a>
+                                                        <a class="dropdown-item" id="leftButtonPS">PlayStation</a>
+                                                        <a class="dropdown-item" id="leftButtonPS2">PlayStation 2</a>
+                                                        <a class="dropdown-item" id="leftButtonPS3">PlayStation 3</a>
+                                                        <a class="dropdown-item" id="leftButtonPS4">PlayStation 4</a>
+                                                        <a class="dropdown-item" id="leftButtonPSV">PlayStation Vita</a>
+                                                        <a class="dropdown-item" id="leftButtonX360">Xbox 360</a>
+                                                        <a class="dropdown-item" id="leftButtonXONE">Xbox One</a>
+                                                        <a class="dropdown-item" id="leftButtonPC">PC</a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-9" id="svgContainerRight"></div>
+                                        <div class="col-md-3">
+                                            <ul class="list-group list-group-horizontal justify-content-end p-1">
+                                                <li class="list-group-item text-body">
+                                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonGenre" data-toggle="dropdown">Genre</button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonGenre">
+                                                        <a class="dropdown-item" id="rightButtonAction">Action</a>
+                                                        <a class="dropdown-item" id="rightButtonActionAdventure">Action-Adventure</a>
+                                                        <a class="dropdown-item" id="rightButtonAdventure">Adventure</a>
+                                                        <a class="dropdown-item" id="rightButtonFighting">Fighting</a>
+                                                        <a class="dropdown-item" id="rightButtonMisc">Miscellaneous</a>
+                                                        <a class="dropdown-item" id="rightButtonMusic">Music</a>
+                                                        <a class="dropdown-item" id="rightButtonParty">Party</a>
+                                                        <a class="dropdown-item" id="rightButtonPlatform">Platform</a>
+                                                        <a class="dropdown-item" id="rightButtonPuzzle">Puzzle</a>
+                                                        <a class="dropdown-item" id="rightButtonRacing">Racing</a>
+                                                        <a class="dropdown-item" id="rightButtonRolePlaying">Role-Playing</a>
+                                                        <a class="dropdown-item" id="rightButtonShooter">Shooter</a>
+                                                        <a class="dropdown-item" id="rightButtonSimulation">Simulation</a>
+                                                        <a class="dropdown-item" id="rightButtonSports">Sports</a>
+                                                        <a class="dropdown-item" id="rightButtonStrategy">Strategy</a>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item text-body">
+                                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonPlatform" data-toggle="dropdown">Platform</button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonPlatform">
+                                                        <a class="dropdown-item" id="rightButtonN64">Nintendo 64</a>
+                                                        <a class="dropdown-item" id="rightButtonSNES">Super Nintendo Entertainment System</a>
+                                                        <a class="dropdown-item" id="rightButtonNS">Nintendo Switch</a>
+                                                        <a class="dropdown-item" id="rightButtonWii">Wii</a>
+                                                        <a class="dropdown-item" id="rightButtonWiiU">WiiU</a>
+                                                        <a class="dropdown-item" id="rightButtonPS">PlayStation</a>
+                                                        <a class="dropdown-item" id="rightButtonPS2">PlayStation 2</a>
+                                                        <a class="dropdown-item" id="rightButtonPS3">PlayStation 3</a>
+                                                        <a class="dropdown-item" id="rightButtonPS4">PlayStation 4</a>
+                                                        <a class="dropdown-item" id="rightButtonPSV">PlayStation Vita</a>
+                                                        <a class="dropdown-item" id="rightButtonX360">Xbox 360</a>
+                                                        <a class="dropdown-item" id="rightButtonXONE">Xbox One</a>
+                                                        <a class="dropdown-item" id="rightButtonPC">PC</a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12">
-                    <div class="card mb-2">
+                    <div class="card mb-2 mt-2">
                         <div class="card-header" id="textClickedGameTitle">
                             <div id="loaderSpinner"></div>Game: click on a member of the pie chart to display more data
                         </div>
@@ -131,14 +219,13 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </body>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://gmousse.github.io/dataframe-js/dist/dataframe.min.js"></script>
 <script>
-    var DataFrame = dfjs.DataFrame;//prvo se mora definirati klasa DataFrame iz dataframe-js biblioteke:https://gmousse.gitbooks.io/dataframe-js/
+    var DataFrame = dfjs.DataFrame;
 
     class DataManipulator {
         /**
@@ -148,23 +235,34 @@
             this.data = null;
             this.verbose = verbose;
 
-            this.genres = ["Action", "Action-Adventure", "Adventure", "Fighting", "Misc", "Music", "Party", "Platform", "Puzzle", "Racing", "Role-Playing", "Shooter", "Simulation", "Sports", "Strategy"];
-            this.genreButtons = [];
-            this.selectedGenre = "Action";
+            this.genres = ["Action", "ActionAdventure", "Adventure", "Fighting", "Misc", "Music", "Party", "Platform", "Puzzle", "Racing", "Shooter", "Simulation", "Sports", "Strategy"];
+            this.genreButtonsLeft = [];
+            this.genreButtonsRight = [];
+            this.selectedGenreLeft = "Action";
+            this.selectedGenreRight = "Adventure";
 
             this.platforms = ["N64", "SNES", "NS", "Wii", "WiiU", "PS", "PS2", "PS3", "PS4", "PSV", "X360", "XONE", "PC"];
-            this.platformButtons = [];
-            this.selectedPlatform = "N64";
+            this.platformButtonsLeft = [];
+            this.platformButtonsRight = [];
+            this.selectedPlatformLeft = "N64";
+            this.selectedPlatformRight = "SNES";
 
             this.regions = ["Global", "NA", "PAL", "JP"];
             this.regionButtons = [];
             this.selectedRegion = "Global";
 
-            this.settingInfoText = [];
+            this.graphTypes = ["Pie", "Barplot", "Treemap"];
+            this.graphTypeButtons = [];
+            this.selectedGraphType = "Barplot";
+
+            this.settingInfoTextLeft = [];
+            this.settingInfoTextRight = [];
+            this.settingInfoTextRegion = null;
 
             this.spinner = null;
 
-            this.svgContainer = null;
+            this.svgContainerLeft = null;
+            this.svgContainerRight = null;
 
             this.tableClicked = null;
             this.textClickedGameTitle = null;
@@ -173,7 +271,7 @@
          * Funkcija koja bi se trebala pozivati nakon kreiranje klase da bi se pokrenuo proces dohvacanja svih potrebnih elemenata.
         */
         init() {
-            //ucitaj podatke koristeci dataframe-js biblioteku: https://www.kaggle.com/ashaheedq/video-games-sales-2019
+            //ucitaj podatke koristeci dataframe-js biblioteku
             DataFrame.fromCSV("src/smol.csv").then(df => {
                 this.data = df.select('Name', 'Genre', 'ESRB_Rating', 'Platform', 'Publisher', 'Developer', 'Global_Sales', 'NA_Sales', 'PAL_Sales', 'JP_Sales', 'Year');
                 if (this.verbose) {
@@ -185,18 +283,31 @@
 
                 this.setEvents();
 
-                let settingGenre = document.querySelector("#textGenre");
-                let settingPlatform = document.querySelector("#textPlatform");
-                let settingRegion = document.querySelector("#textRegion");
-                this.settingInfoText.push(settingGenre, settingPlatform, settingRegion);
+                this.settingInfoTextRegion = document.querySelector("#textRegion");
+
+                let settingGenreLeft = document.querySelector("#textGenreLeft");
+                let settingPlatformLeft = document.querySelector("#textPlatformLeft");
+
+                let settingGenreRight = document.querySelector("#textGenreRight");
+                let settingPlatformRight = document.querySelector("#textPlatformRight");
+
+                this.settingInfoTextLeft.push(settingGenreLeft, settingPlatformLeft);
+                this.settingInfoTextRight.push(settingGenreRight, settingPlatformRight);
+
+
                 this.spinner = document.querySelector("#loaderSpinner");
-                this.svgContainer = document.querySelector("#svgContainer");
+                this.svgContainerLeft = document.querySelector("#svgContainerLeft");
+                this.svgContainerRight = document.querySelector("#svgContainerRight");
                 this.tableClicked = document.querySelector("#tableClicked");
                 this.textClickedGameTitle = document.querySelector("#textClickedGameTitle");
-                if (this.verbose) { console.log(this.settingInfoText); }
+
+                this.graphWidth = 700;
+                this.graphHeight = 700;
+
+                if (this.verbose) { console.log(this.settingInfoTextLeft); }
 
                 //na kraju se prikaz osvježava
-                this.updateDisplay();
+                this.updateDisplay("ALL");
             });
         }
         /**
@@ -204,46 +315,93 @@
         */
         setEvents() {
             this.genres.forEach(genre => {
-                let temp = document.querySelector("#button" + genre);
-                this.eventClickHandlerChange(temp, "genre", genre);
-                this.genreButtons.push(temp);
+                let temp = document.querySelector("#leftButton" + genre);
+                this.eventClickHandlerChange(temp, "genre", genre, "L");
+                this.genreButtonsLeft.push(temp);
 
+                temp = document.querySelector("#rightButton" + genre);
+                this.eventClickHandlerChange(temp, "genre", genre, "R");
+                this.genreButtonsRight.push(temp);
             });
-            if (this.verbose) { console.log(this.genreButtons); }
 
             this.platforms.forEach(platform => {
-                let temp = document.querySelector("#button" + platform);
-                this.eventClickHandlerChange(temp, "platform", platform);
-                this.platformButtons.push(temp);
+                let temp = document.querySelector("#leftButton" + platform);
+                this.eventClickHandlerChange(temp, "platform", platform, "L");
+                this.platformButtonsLeft.push(temp);
+
+                temp = document.querySelector("#rightButton" + platform);
+                this.eventClickHandlerChange(temp, "platform", platform, "R");
+                this.platformButtonsRight.push(temp);
             });
-            if (this.verbose) { console.log(this.platformButtons); }
 
             this.regions.forEach(region => {
                 let temp = document.querySelector("#button" + region);
-                this.eventClickHandlerChange(temp, "region", region);
+                this.eventClickHandlerChange(temp, "region", region, "button");
                 this.regionButtons.push(temp);
             });
             if (this.verbose) { console.log(this.regionButtons); }
+
+            this.graphTypes.forEach(graphType => {
+                let temp = document.querySelector("#buttonGraphType" + graphType);
+                this.eventClickHandlerChange(temp, "graphType", graphType, "button");
+                this.graphTypeButtons.push(temp);
+            });
         }
         /**
          * Funkcija koja danoj tipci daje on click event ovisno o proslijedjenim varijablama te tada mijenjaju trenutno odabrane varijable za prikaz
         */
-        eventClickHandlerChange(button, type, value) {
-            if (type == "genre") {
-                button.addEventListener("click", (e) => {
-                    this.selectedGenre = value;
-                    this.updateDisplay();
-                });
-            } else if (type == "platform") {
-                button.addEventListener("click", (e) => {
-                    this.selectedPlatform = value;
-                    this.updateDisplay();
-                });
-            } else if (type == "region") {
-                button.addEventListener("click", (e) => {
-                    this.selectedRegion = value;
-                    this.updateDisplay();
-                });
+        eventClickHandlerChange(button, type, value, LR) {
+            if (LR == "L") {
+                if (type == "genre") {
+                    button.addEventListener("click", (e) => {
+                        this.selectedGenreLeft = value;
+                        this.updateDisplay("L");
+                    });
+                } else if (type == "platform") {
+                    button.addEventListener("click", (e) => {
+                        this.selectedPlatformLeft = value;
+                        this.updateDisplay("L");
+                    });
+                } else {
+                    console.log("Something went wrong with setting on click events with following parameters (button, type, value):");
+                    console.log(button);
+                    console.log(type);
+                    console.log(value);
+                }
+            } else if (LR == "R"){
+                if (type == "genre") {
+                    button.addEventListener("click", (e) => {
+                        this.selectedGenreRight = value;
+                        this.updateDisplay("R");
+                    });
+                } else if (type == "platform") {
+                    button.addEventListener("click", (e) => {
+                        this.selectedPlatformRight = value;
+                        this.updateDisplay("R");
+                    });
+                } else {
+                    console.log("Something went wrong with setting on click events with following parameters (button, type, value):");
+                    console.log(button);
+                    console.log(type);
+                    console.log(value);
+                }
+            } else if (LR == "button") {
+                if (type == "region") {
+                    button.addEventListener("click", (e) => {
+                        this.selectedRegion = value;
+                        this.updateDisplay("ALL");
+                    });
+                } else if(type == "graphType"){
+                    button.addEventListener("click", (e) => {
+                        this.selectedGraphType = value;
+                        this.updateDisplay("ALL");
+                    });
+                } else {
+                    console.log("Something went wrong with setting on click events with following parameters (button, type, value):");
+                    console.log(button);
+                    console.log(type);
+                    console.log(value);
+                }
             } else {
                 console.log("Something went wrong with setting on click events with following parameters (button, type, value):");
                 console.log(button);
@@ -254,49 +412,92 @@
         /**
          * Funkcija koja osvježava sadrzaj stranice jednom, mijenja prikaz odabranih varijabli te sam graf
         */
-        updateDisplay() {
-            if (this.verbose) {
-                console.log(this.selectedGenre);
-                console.log(this.selectedPlatform);
-                console.log(this.selectedRegion);
+        updateDisplay(LR) {
+            this.settingInfoTextLeft[0].innerHTML = "Genre left: " + this.selectedGenreLeft;
+            this.settingInfoTextLeft[1].innerHTML = "Platform left: " + this.selectedPlatformLeft;
+
+            this.settingInfoTextRight[0].innerHTML = "Genre left: " + this.selectedGenreRight;
+            this.settingInfoTextRight[1].innerHTML = "Platform left: " + this.selectedPlatformRight;
+
+            this.settingInfoTextRegion.innerHTML = "Region: " + this.selectedRegion;
+
+            if(LR == "ALL"){
+                let dataArrayLeft = this.getTopTenFromData("L");
+                let dataArrayRight = this.getTopTenFromData("R");
+                this.showGraph(dataArrayLeft, "L");
+                this.showGraph(dataArrayRight, "R");
+            } else if (LR == "L"){
+                let dataArrayLeft = this.getTopTenFromData("L");
+                this.showGraph(dataArrayLeft, "L");
+            } else if (LR == "R"){
+                let dataArrayRight = this.getTopTenFromData("R");
+                this.showGraph(dataArrayRight, "R");
             }
-
-            this.settingInfoText[0].innerHTML = "Genre: " + this.selectedGenre;
-            this.settingInfoText[1].innerHTML = "Platform: " + this.selectedPlatform;
-            this.settingInfoText[2].innerHTML = "Region: " + this.selectedRegion;
-
-            let dataArray = this.getTopTenFromData();
-            this.showGraph(dataArray);
         }
         /**
          * Funkcija koja odabire potrebne stupce iz baze podataka te proslijeduje prvih deset (ili manje) natrag
         */
-        getTopTenFromData() {
-            let temp = this.data.select('Name', 'Genre', 'ESRB_Rating', 'Platform', 'Publisher', 'Developer', this.selectedRegion + '_Sales', 'Year').filter({ 'Genre': this.selectedGenre, 'Platform': this.selectedPlatform }).filter(row => row.get(this.selectedRegion + '_Sales') != "");
+        getTopTenFromData(LR) {
+            let temp = null;
+            if(LR == "L"){
+                temp = this.data.select('Name', 'Genre', 'ESRB_Rating', 'Platform', 'Publisher', 'Developer', this.selectedRegion + '_Sales', 'Year').filter({ 'Genre': this.selectedGenreLeft, 'Platform': this.selectedPlatformLeft }).filter(row => row.get(this.selectedRegion + '_Sales') != "");
+            } else if (LR == "R"){
+                temp = this.data.select('Name', 'Genre', 'ESRB_Rating', 'Platform', 'Publisher', 'Developer', this.selectedRegion + '_Sales', 'Year').filter({ 'Genre': this.selectedGenreRight, 'Platform': this.selectedPlatformRight }).filter(row => row.get(this.selectedRegion + '_Sales') != "");
+            } else {
+                console.log("oof, something went wrong...");
+                return null;
+            }
+
             if (this.verbose) {
                 console.log("Gotten " + temp.count() + " row(s) of data");
                 console.log(temp.head(10).toArray());
             }
+
             return temp.head(10).toArray();
         }
         /**
          * Funkcija koja prvo provjerava dali svg kontejner ima clanove, ako da obrisi ih, nakon toga stvara novi svg element sa grafom koji sadrzi vrijednosti proslijedjenih podataka
         */
-        showGraph(dataArray) {
-            if (this.svgContainer.hasChildNodes()) {
-                this.svgContainer.innerHTML = "";
+        showGraph(dataArray, LR) {
+            if (LR == "L") {
+                if (this.svgContainerLeft.hasChildNodes()) {
+                    this.svgContainerLeft.innerHTML = "";
+                }
             }
-			//u sljedecem dijelu koda se koristi d3 biblioteka: https://github.com/d3/d3
-            let width = 800;
-            let height = 800;
-            let outerRadius = (Math.min(width, height) / 2) * 0.9;
+            if (LR == "R") {
+                if (this.svgContainerRight.hasChildNodes()) {
+                    this.svgContainerRight.innerHTML = "";
+                }
+            }
+
+            if(this.selectedGraphType == "Pie") {
+                this.showPie(dataArray, LR);
+            } else if (this.selectedGraphType == "Barplot"){
+                this.showBarplot(dataArray, LR);
+            }
+        }
+
+        showPie(dataArray, LR) {
+            let width = this.graphWidth;
+            let height = this.graphHeight;
+            let outerRadius = (Math.min(width, height) / 2) * 0.95;
             let innerRadius = 0;
             let color = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
 
-            let svg = d3.select("#svgContainer")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height);
+            let svg = null;
+            if (LR == "L") {
+                svg = d3.select("#svgContainerLeft")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+            } else if (LR == "R") {
+                svg = d3.select("#svgContainerRight")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+            } else {
+                console.log("oof, something went wrong...");
+            }
 
             let pie = d3.pie()
                 .value(d => parseFloat((d[6]).replace(',', '.')))
@@ -312,6 +513,7 @@
                 .append("g")
                 .attr("class", "pie")
                 .attr("transform", "translate(" + (width / 2) + ", " + (height / 2) + ")");
+
             pieArcs.append("path")
                 .attr("fill", function (d, i) { return color(i); })
                 .attr("d", arc);
@@ -322,6 +524,7 @@
                 .append("g")
                 .attr("class", "pieText")
                 .attr("transform", "translate(" + (width / 2) + ", " + (height / 2) + ")");
+
             pieArcsText.append("text")
                 .attr("transform", function (d) {
                     var sum = 0.0;
@@ -340,6 +543,7 @@
                 .attr("text-anchor", "middle")
                 .attr("class", "text")
                 .text(function (d) { return d.data[0] + ": " + d.data[6] + "M"; });
+
             pieArcs.on("click", (d) => {
                 if (this.verbose) { console.log(d.data); }
                 let temp = "<td>" + d.data[0] + "</td>" + "<td>" + d.data[1] + "</td>" + "<td>" + d.data[2] + "</td>" + "<td>" + d.data[3] + "</td>" + "<td>" + d.data[4] + "</td>" + "<td>" + d.data[5] + "</td>" + "<td>" + d.data[6] + " Million units</td>";
@@ -348,8 +552,81 @@
             });
 
         }
+        showBarplot(dataArray, LR){
+            let margin = {top:30, right:30, bottom:40, left:60};
+            let width = this.graphWidth - margin.left - margin.right;
+            let height = this.graphHeight - margin.top - margin.bottom;
+
+            let svg = null;
+            if (LR == "L") {
+                svg = d3.select("#svgContainerLeft")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            } else if (LR == "R") {
+                svg = d3.select("#svgContainerRight")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            } else {
+                console.log("oof, something went wrong...");
+            }
+
+            //koristi se sljedeca funkcija da se dobije max nekog stupca (sedmog u ovom slucaju) 2D matrice
+            //console.log(Math.max.apply(Math, dataArray.map(v => parseFloat(v[6].replace(",",".")))));
+
+            let barPadding = 3;
+            let barWidth = width/dataArray.length - barPadding;
+
+            let x = d3.scaleBand()
+                .domain(dataArray.map((d,i)=>{return i;}))
+                .rangeRound([0, width]);
+            
+            let y = d3.scaleLinear()
+                .domain([0, Math.max.apply(Math, dataArray.map(row => parseFloat(row[6].replace(",","."))))])
+                .rangeRound([height, 0]);
+            
+            let xAxis = d3.axisBottom(x).tickValues(dataArray.map(row => row[0]));
+            let yAxis = d3.axisLeft(y).ticks(dataArray.length);aaaaaaaaaaaaaaa
+
+            let color = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
+
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "middle");
+            
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
+            
+            svg.append("g")
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x", 0 - (height/2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Sales");
+            
+            let barchart = svg.selectAll("rect")
+                .data(dataArray)
+                .enter()
+                .append("rect")
+                .attr("x", (d,i)=>{return x(i);})
+                .attr("y", y)
+                .attr("height", (d)=>{return height - y(parseFloat(d[6].replace(",",".")))})
+                .attr("width", barWidth)
+                .attr("fill", (d,i)=>{return color(i)});
+        }
     }
-    let dm = new DataManipulator();
+    let dm = new DataManipulator(true);
     dm.init();
 </script>
 
