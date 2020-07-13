@@ -56,7 +56,7 @@
                             </div>
                         </li>
                         <li class="list-group-item text-body">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonGraphType" data-toggle="dropdown">GraphType</button>
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButtonGraphType" data-toggle="dropdown">Graph type</button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonGraphType">
                                 <a class="dropdown-item" id="buttonGraphTypePie">Pie</a>
                                 <a class="dropdown-item" id="buttonGraphTypeBarplot">Barplot</a>
@@ -245,7 +245,7 @@
             this.platformButtonsLeft = [];
             this.platformButtonsRight = [];
             this.selectedPlatformLeft = "N64";
-            this.selectedPlatformRight = "SNES";
+            this.selectedPlatformRight = "PS2";
 
             this.regions = ["Global", "NA", "PAL", "JP"];
             this.regionButtons = [];
@@ -416,8 +416,8 @@
             this.settingInfoTextLeft[0].innerHTML = "Genre left: " + this.selectedGenreLeft;
             this.settingInfoTextLeft[1].innerHTML = "Platform left: " + this.selectedPlatformLeft;
 
-            this.settingInfoTextRight[0].innerHTML = "Genre left: " + this.selectedGenreRight;
-            this.settingInfoTextRight[1].innerHTML = "Platform left: " + this.selectedPlatformRight;
+            this.settingInfoTextRight[0].innerHTML = "Genre right: " + this.selectedGenreRight;
+            this.settingInfoTextRight[1].innerHTML = "Platform right: " + this.selectedPlatformRight;
 
             this.settingInfoTextRegion.innerHTML = "Region: " + this.selectedRegion;
 
@@ -474,6 +474,8 @@
                 this.showPie(dataArray, LR);
             } else if (this.selectedGraphType == "Barplot"){
                 this.showBarplot(dataArray, LR);
+            } else if(this.selectedGraphType == "Treemap"){
+                this.showTreeMap(dataArray, LR);
             }
         }
 
@@ -583,24 +585,17 @@
             let barWidth = width/dataArray.length - barPadding;
 
             let x = d3.scaleBand()
-                .domain(dataArray.map((d,i)=>{return i;}))
+                .domain(dataArray.map((d,i)=>{return d[0];}))
                 .rangeRound([0, width]);
             
             let y = d3.scaleLinear()
                 .domain([0, Math.max.apply(Math, dataArray.map(row => parseFloat(row[6].replace(",","."))))])
                 .rangeRound([height, 0]);
-            
-            let xAxis = d3.axisBottom(x).tickValues(dataArray.map(row => row[0]));
-            let yAxis = d3.axisLeft(y).ticks(dataArray.length);aaaaaaaaaaaaaaa
+            let xAxis = d3.axisBottom(x).tickValues(dataArray.map(row => {return row[0]}));
+            let yAxis = d3.axisLeft(y).ticks(dataArray.length);
 
             let color = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
 
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis)
-                .selectAll("text")
-                .style("text-anchor", "middle");
             
             svg.append("g")
                 .attr("class", "y axis")
@@ -619,14 +614,94 @@
                 .data(dataArray)
                 .enter()
                 .append("rect")
-                .attr("x", (d,i)=>{return x(i);})
-                .attr("y", y)
+                .attr("x", (d,i)=>{return x(d[0]);})
+                .attr("y", (d)=>{return y(parseFloat(d[6].replace(",",".")))})
                 .attr("height", (d)=>{return height - y(parseFloat(d[6].replace(",",".")))})
                 .attr("width", barWidth)
                 .attr("fill", (d,i)=>{return color(i)});
+
+                
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "start")
+                .style("font-size", "2em")
+                .attr("transform", "translate(-15,-20),rotate(-90)")
+                .attr("pointer-events", "none");
+            
+            barchart.on("click", (d) => {
+                if (this.verbose) { console.log(d); }
+                let temp = "<td>" + d[0] + "</td>" + "<td>" + d[1] + "</td>" + "<td>" + d[2] + "</td>" + "<td>" + d[3] + "</td>" + "<td>" + d[4] + "</td>" + "<td>" + d[5] + "</td>" + "<td>" + d[6] + " Million units</td>";
+                this.tableClicked.rows[1].innerHTML = temp;
+                this.textClickedGameTitle.innerHTML = "<div id='loaderSpinner'></div>Game: " + d[0];
+            });
+        }
+        showTreeMap(dataArray, LR){
+            let margin = {top:10, right:10, bottom:10, left:10};
+            let width = this.graphWidth - margin.left - margin.right;
+            let height = this.graphHeight - margin.top - margin.bottom;
+
+            let svg = null;
+            if (LR == "L") {
+                svg = d3.select("#svgContainerLeft")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            } else if (LR == "R") {
+                svg = d3.select("#svgContainerRight")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            } else {
+                console.log("oof, something went wrong...");
+            }
+            dataArray["name"] = "origin";
+            dataArray["children"] = JSON.parse(JSON.stringify(dataArray));
+            dataArray["children"].forEach(row => {
+                row["name"] = row[0];
+                row[6] = parseFloat(row[6].replace(",","."));nisam apsolutno nigdje dosao
+                row["value"] = row[6];
+            });
+            console.log(dataArray);
+
+            let root = d3.hierarchy(dataArray);
+            console.log(root);
+
+            let treemap = d3.treemap()
+                .size([width, height])
+                .paddingInner(1)
+                (root);
+            
+            console.log(root.leaves());
+
+            let boxes = svg.selectAll("rect")
+                .data(root.leaves())
+                .enter()
+                .append("rect")
+                    .attr("x", (d)=>{return d.x0})
+                    .attr("y", (d)=>{return d.y0})
+                    .attr("width", (d)=>{return d.x1-d.x0})
+                    .attr("height",(d)=>{return d.y1-d.y0})
+                    .style("stroke","black")
+                    .style("fill","#177013");
+            
+            let boxesText = svg.selectAll("text")
+                .data(root.leaves())
+                .enter()
+                .append("text")
+                    .attr("x", (d)=>{return d.x0+10})
+                    .attr("y", (d)=>{return d.y0+10})
+                    .text((d)=>{return d.data[0]});
+            
         }
     }
-    let dm = new DataManipulator(true);
+    let dm = new DataManipulator();
     dm.init();
 </script>
 
