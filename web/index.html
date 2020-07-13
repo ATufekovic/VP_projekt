@@ -253,7 +253,7 @@
 
             this.graphTypes = ["Pie", "Barplot", "Treemap"];
             this.graphTypeButtons = [];
-            this.selectedGraphType = "Barplot";
+            this.selectedGraphType = "Treemap";
 
             this.settingInfoTextLeft = [];
             this.settingInfoTextRight = [];
@@ -661,24 +661,45 @@
             } else {
                 console.log("oof, something went wrong...");
             }
-            dataArray["name"] = "origin";
-            dataArray["children"] = JSON.parse(JSON.stringify(dataArray));
-            dataArray["children"].forEach(row => {
-                row["name"] = row[0];
-                row[6] = parseFloat(row[6].replace(",","."));nisam apsolutno nigdje dosao
-                row["value"] = row[6];
-            });
-            console.log(dataArray);
 
-            let root = d3.hierarchy(dataArray);
-            console.log(root);
+            let color = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
+
+            let tempArray = {};
+            tempArray.name = "origin";
+            tempArray.children = [];
+            dataArray.forEach((e)=>{
+                tempArray.children.push({"name":e[0],
+                    "genre":e[1],
+                    "ESRB":e[2],
+                    "Platform":e[3],
+                    "Publisher":e[4],
+                    "Developer":e[5],
+                    "value":parseFloat(e[6].replace(",",".")),
+                    "Year":e[7]});
+            });
+            if(this.verbose){
+                console.log("tempArray:");
+                console.log(tempArray);
+            }
+
+            let root = d3.hierarchy(tempArray)
+                .sum((d) => {
+                    return d.value;
+                });
+                if(this.verbose){
+                    console.log("Root:");
+                    console.log(root);
+                }
 
             let treemap = d3.treemap()
                 .size([width, height])
                 .paddingInner(1)
                 (root);
             
-            console.log(root.leaves());
+            if(this.verbose){
+                console.log("Root leaves:")
+                console.log(root.leaves());
+            }
 
             let boxes = svg.selectAll("rect")
                 .data(root.leaves())
@@ -689,19 +710,19 @@
                     .attr("width", (d)=>{return d.x1-d.x0})
                     .attr("height",(d)=>{return d.y1-d.y0})
                     .style("stroke","black")
-                    .style("fill","#177013");
+                    .style("fill",(d,i)=>{return color(i);});
             
             let boxesText = svg.selectAll("text")
                 .data(root.leaves())
                 .enter()
                 .append("text")
                     .attr("x", (d)=>{return d.x0+10})
-                    .attr("y", (d)=>{return d.y0+10})
-                    .text((d)=>{return d.data[0]});
+                    .attr("y", (d)=>{return d.y0+20})
+                    .text((d)=>{return d.data.name;});
             
         }
     }
-    let dm = new DataManipulator();
+    let dm = new DataManipulator(true);
     dm.init();
 </script>
 
