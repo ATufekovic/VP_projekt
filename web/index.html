@@ -710,7 +710,13 @@
                     .attr("width", (d)=>{return d.x1-d.x0})
                     .attr("height",(d)=>{return d.y1-d.y0})
                     .style("stroke","black")
-                    .style("fill",(d,i)=>{return color(i);});
+                    .style("fill",(d,i)=>{return color(i);})
+                    .on("click",(d)=>{
+                        if (this.verbose) { console.log(d); }
+                        let temp = "<td>" + d.data.name + "</td>" + "<td>" + d.data.genre + "</td>" + "<td>" + d.data.ESRB + "</td>" + "<td>" + d.data.Platform + "</td>" + "<td>" + d.data.Publisher + "</td>" + "<td>" + d.data.Developer + "</td>" + "<td>" + d.data.value + " Million units</td>";
+                        this.tableClicked.rows[1].innerHTML = temp;
+                        this.textClickedGameTitle.innerHTML = "<div id='loaderSpinner'></div>Game: " + d.data.name;
+                    });
             
             let boxesText = svg.selectAll("text")
                 .data(root.leaves())
@@ -718,9 +724,11 @@
                 .append("text")
                     .attr("x", (d)=>{return d.x0+10})
                     .attr("y", (d)=>{return d.y0+20})
-                    .text((d)=>{return d.data.name;});
+                    .attr("transform",(d)=>{return "rotate(10," + (d.x0+10) + "," + (d.y0+10) + ")";})
+                    .text((d)=>{return d.data.name + ": " + d.data.value + "M";});
             
         }
+
     }
     let dm = new DataManipulator(true);
     dm.init();
